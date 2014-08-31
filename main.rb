@@ -10,8 +10,9 @@ class Game
 		@map = map
 		@objects = [@player]
 		@object_locations = {}
+		@object_locations.merge!(@map.map_hash)
 
-		@objects.each { |obj| @object_locations[obj.location] = obj.name.to_sym }
+		self.update_locations
 	end
 
 	def run_game
@@ -19,13 +20,21 @@ class Game
 		until @stop
 			self.prompt_user
 			self.update_locations
-			print @map.draw(10, 10, @object_locations)
+			print @map.draw(15, 15, @object_locations)
 		end
 	end
 
 	def update_locations
-		@object_locations.clear
-		@objects.each { |obj| @object_locations[obj.location] = obj.name.to_sym }
+		@objects.each do |obj|
+			current_location = @object_locations.select { |key, value| value == obj.name.to_sym }.keys[0]
+			if @object_locations[obj.location] != :empty || @object_locations[obj.location] == nil
+				obj.location = current_location
+				next
+			elsif @object_locations[obj.location] != obj.name.to_sym
+				@object_locations[obj.location] = obj.name.to_sym
+			  @object_locations[current_location] = :empty
+			end
+		end
 	end
 
 	def prompt_user
@@ -44,6 +53,11 @@ class Game
 	end
 
 	def handle_response(verb, noun)
+
+		if verb == nil && noun == nil
+			return
+		end
+
 		if verb == "quit" || verb == "q"
 			@stop = true
 			return
@@ -67,8 +81,8 @@ class Game
 	end
 end
 
-farmhouse = build_farmhouse
+map_hash = build_farmhouse
 george = Player.new("George")
-world_map = Map.new(farmhouse)
+world_map = Map.new(map_hash)
 game = Game.new(george, world_map)
 game.run_game
