@@ -1,14 +1,17 @@
 require_relative "user_class.rb"
 require_relative "map_utility.rb"
 require_relative "map.rb"
+require_relative "thing_class.rb"
 
 class Game
 
-	def initialize(player, map)
-		@player = player
+	attr_accessor :object_locations, :objects, :player
+
+	def initialize(map)
+		@player = nil
 		@stop = false
 		@map = map
-		@objects = [@player]
+		@objects = {}
 		@object_locations = {}
 		@object_locations.merge!(@map.map_hash)
 
@@ -25,7 +28,7 @@ class Game
 	end
 
 	def update_locations
-		@objects.each do |obj|
+		@objects.each do |key, obj|
 			current_location = @object_locations.select { |key, value| value == obj.name.to_sym }.keys[0]
 			if @object_locations[obj.location] != :empty || @object_locations[obj.location] == nil
 				obj.location = current_location
@@ -72,6 +75,7 @@ class Game
 				puts "You don't know how to #{verb.to_s}"
 			end
 		else
+			noun = objects[noun.to_sym]
 			if @player.respond_to?(verb)
 				@player.method(verb).call(noun)
 			else
@@ -82,7 +86,8 @@ class Game
 end
 
 map_hash = build_farmhouse
-george = Player.new("George")
 world_map = Map.new(map_hash)
-game = Game.new(george, world_map)
+game = Game.new(world_map)
+chest = Chest.new("chest", [4, 5], ["sword", "shield"], game)
+george = Player.new("George", game)
 game.run_game

@@ -3,6 +3,7 @@ MAP_ELS = {
 	corner: "+",
 	h_wall: "|",
 	v_wall: "-",
+	chest: "C",
 	empty: " "
 }
 
