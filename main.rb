@@ -2,6 +2,8 @@ require_relative "user_class.rb"
 require_relative "map_utility.rb"
 require_relative "map.rb"
 require_relative "thing_class.rb"
+require_relative "language_parser.rb"
+require_relative "key_mapper.rb"
 
 class Game
 
@@ -19,11 +21,10 @@ class Game
 	end
 
 	def run_game
-
 		until @stop
-			self.prompt_user
-			self.update_locations
 			print @map.draw(15, 15, @object_locations)
+			self.handle_input
+			self.update_locations
 		end
 	end
 
@@ -41,48 +42,43 @@ class Game
 	end
 
 	def prompt_user
+		print @map.draw(15, 15, @object_locations)
 		puts "What would you like to do?"
 		response = gets.chomp
 		system "clear"
 		parse_response(response)
 	end
 
-	def parse_response(input)
-		words = input.split(/ /)
-		verb = words[0]
-		noun = words[1]
+	def handle_input()
+		c = read_char
+		system "clear"
 
-		handle_response(verb, noun)
+		case c
+		when "\e[A"
+			@player.move(:north)
+		when "\e[B"
+			@player.move(:south)
+		when "\e[C"
+    	@player.move(:east)
+  	when "\e[D"
+    	@player.move(:west)
+    when "\e[3~"
+    	@stop = true
+    when "\r"
+    	self.prompt_user
+    when " "
+    	@player.attack
+    else
+    	puts c.inspect
+
+    	# response += c.to_s
+    	# print @map.draw(15, 15, @object_locations)
+    	# print "\n#{response}"
+    	# t = read_char
+    	# handle_input(t, response)
+    end
 	end
 
-	def handle_response(verb, noun)
-
-		if verb == nil && noun == nil
-			return
-		end
-
-		if verb == "quit" || verb == "q"
-			@stop = true
-			return
-		end
-
-		verb = verb.to_sym
-
-		if noun == nil
-			if @player.respond_to?(verb)
-				@player.method(verb).call
-			else
-				puts "You don't know how to #{verb.to_s}"
-			end
-		else
-			noun = objects[noun.to_sym]
-			if @player.respond_to?(verb)
-				@player.method(verb).call(noun)
-			else
-				puts "You don't know how to do that."
-			end
-		end
-	end
 end
 
 map_hash = build_farmhouse
