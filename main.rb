@@ -71,11 +71,6 @@ class Game
     else
     	puts c.inspect
 
-    	# response += c.to_s
-    	# print @map.draw(15, 15, @object_locations)
-    	# print "\n#{response}"
-    	# t = read_char
-    	# handle_input(t, response)
     end
 	end
 

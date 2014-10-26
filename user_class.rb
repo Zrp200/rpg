@@ -39,6 +39,10 @@ class Player
 		self.inventory
 	end
 
+	def attack
+		puts "You attack!"
+	end
+
 	def nearby?(target)
 		nearby_locations = nearby_locs(@location)
 		nearby_locations.include?(target.location)
