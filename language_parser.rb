@@ -7,7 +7,7 @@ def parse_response(input)
 end
 
 def parse_verb(text)
-	verbs = ["look", "attack", "open", "w", "a", "s", "d"]
+	verbs = ["look", "attack", "open", "inventory", "i", "drop", "pick"]
 	verb = text.find { |word| verbs.include?(word) }
 end
 

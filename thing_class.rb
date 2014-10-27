@@ -8,6 +8,8 @@ class Thing
 		@name = name
 		@location = location
 		@game = game
+
+		@game.objects[name.to_sym] = self
 	end
 
 end
@@ -38,8 +40,8 @@ class Chest < Thing
 
 		until @contents.empty?
 			item = @contents.pop
-			message += "#{item}, "
-			player.inventory[:items] << item
+			message += "#{item.name}, "
+			player.inventory[:items] << item.name
 		end
 
 		@game.objects.delete(:chest)

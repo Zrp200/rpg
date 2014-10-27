@@ -35,6 +35,40 @@ class Player
 		end
 	end
 
+	def drop(item)
+		if @inventory[:items].include?(item.name)
+			empty_spot = nearby_locs(@location).find { |loc| @game.object_locations[loc] == :empty }
+			if empty_spot
+				@game.object_locations[empty_spot] = item.name.to_sym
+				item.location = empty_spot
+				@inventory[:items].delete(item.name)
+			else
+				puts "You can't drop anything here."
+			end
+		else
+			puts "You aren't carrying #{item.name}"
+		end
+	end
+
+	def pick(item)
+		self.pick_up(item)
+	end
+
+	def pick_up(item)
+		if !@inventory[:items].include?(item.name)
+			if nearby?(item)
+				@inventory[:items] << item.name
+				@game.object_locations[item.location] = :empty
+				item.location = nil
+			else
+				puts "There's nothing to pick up."
+			end
+		else
+			puts "You're already carrying #{item.name}."
+		end
+	end
+
+
 	def i
 		self.inventory
 	end

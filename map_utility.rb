@@ -4,7 +4,8 @@ MAP_ELS = {
 	h_wall: "|",
 	v_wall: "-",
 	chest: "C",
-	empty: " "
+	empty: " ",
+	sword: "┼"
 }
 
 def build_farmhouse
