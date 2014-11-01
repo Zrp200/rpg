@@ -27,7 +27,12 @@ class Player
 		@inventory.each { |key, value| puts "#{key}: #{value}" }
 	end
 
-	def open(target)
+	def open(target=nil)
+		if target == nil
+			puts "Can't open nothing."
+			return
+		end
+
 		if nearby?(target)
 			target.open(self)
 		else
@@ -35,7 +40,12 @@ class Player
 		end
 	end
 
-	def drop(item)
+	def drop(item=nil)
+		if item == nil
+			puts "Can't drop nothing."
+			return
+		end
+
 		if @inventory[:items].include?(item.name)
 			empty_spot = nearby_locs(@location).find { |loc| @game.object_locations[loc] == :empty }
 			if empty_spot
@@ -54,7 +64,13 @@ class Player
 		self.pick_up(item)
 	end
 
-	def pick_up(item)
+	def pick_up(item=nil)
+
+		if item == nil
+			puts "Can't pick up nothing."
+			return
+		end
+
 		if !@inventory[:items].include?(item.name)
 			if nearby?(item)
 				@inventory[:items] << item.name
