@@ -56,5 +56,13 @@ def show_single_key
     puts "SOMETHING ELSE: #{c.inspect}"
   end
 end
+
+thread1 = Thread.new { show_single_key while(true) }
+thread2 = Thread.new { 
+  while true
+    puts "         \n"
+    sleep(1.0/18.0)
+  end
+}
  
-#show_single_key while(true)
+show_single_key while(true)

@@ -1,8 +1,8 @@
 MAP_ELS = {
 	player: "@",
 	corner: "+",
-	h_wall: "|",
-	v_wall: "-",
+	v_wall: "|",
+	h_wall: "-",
 	chest: "C",
 	empty: " ",
 	sword: "┼"
