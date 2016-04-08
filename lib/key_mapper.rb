@@ -57,12 +57,12 @@ def show_single_key
   end
 end
 
-thread1 = Thread.new { show_single_key while(true) }
-thread2 = Thread.new { 
-  while true
-    puts "         \n"
-    sleep(1.0/18.0)
-  end
-}
+# thread1 = Thread.new { show_single_key while(true) }
+# thread2 = Thread.new { 
+#   while true
+#     puts "         \n"
+#     sleep(1.0/18.0)
+#   end
+# }
  
-show_single_key while(true)
+# show_single_key while(true)
