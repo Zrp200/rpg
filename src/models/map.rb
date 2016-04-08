@@ -1,4 +1,4 @@
-require_relative "map_utility.rb"
+require_relative "../../util/map_utility.rb"
 
 class Map
 

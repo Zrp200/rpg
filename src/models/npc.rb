@@ -1,4 +1,4 @@
-require_relative "utility.rb"
+require_relative "../../util/utility.rb"
 
 class NPC
 
