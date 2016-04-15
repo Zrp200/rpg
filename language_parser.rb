@@ -1,31 +1,27 @@
 def parse_response(input)
 	words = input.split(/ /)
-	verb = parse_verb(words)
-	noun = parse_noun(words)
+	verb = parse_verb words
+	noun = parse_noun words
 
-	handle_response(verb, noun)
+	handle_response verb, noun
 end
 
 def parse_verb(text)
-	verbs = ["look", "attack", "open", "inventory", "i", "drop", "pick"]
-	verb = text.find { |word| verbs.include?(word) }
+	verbs = %w[	look attack open inventory i drop pick	]
+	verb = text.find { |word| verbs.include? word }
 end
 
 def parse_noun(text)
-	noun = text.length > 1 ? text.last : nil
+	text.length > 1 ? text.last : nil
 end
 
 def handle_response(verb, noun)
 
-	if verb == nil && noun == nil
-		return false
-	end
+	return false if verb.nil? && noun.nil?
 
-	if verb == "quit" || verb == "q"
-		@stop = true
-	end
+	@stop = true if verb == "quit" || verb == "q"
 
-	if noun == nil
+	if noun.nil?
 		if @player.respond_to?(verb.to_sym)
 			@player.method(verb.to_sym).call
 		else
